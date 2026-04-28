@@ -2,147 +2,211 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>World Of Rucoy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio Comercial</title>
   <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff; /* fundo branco */
-      color: #000000; /* texto preto */
-      font-family: 'Arial', sans-serif;
-      height: 100vh;
-    }
-
-    /* Tela de abertura */
-    #splash {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #333;
+      color: #fff;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
     }
 
-    #splash h1 {
-      font-size: 4em;
-      margin-bottom: -20px;
-      text-shadow: 2px 2px 5px #aaa;
+    /* Cabeçalho */
+    header {
+      background: linear-gradient(to right, rgb(200, 23, 0), rgb(90, 0, 0));
+      color: #fff;
+      padding: 15px 30px;
+      position: relative;
     }
 
-    #splash h2 {
-      font-size: 1.2em;
-      margin-bottom: 20px;
-      font-weight: normal;
-    }
+    header h1 { display: inline-block; }
+    .menu { list-style: none; float: right; }
+    .menu li { display: inline; margin: 0 15px; position: relative; }
+    .menu a { color: #fff; text-decoration: none; transition: 0.3s; cursor: pointer; }
+    .menu a:hover { color: #ff9800; }
 
-    .loading {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .dot {
-      width: 15px;
-      height: 15px;
-      background-color: #000000; /* pontos pretos */
-      border-radius: 50%;
-      animation: bounce 1s infinite;
-    }
-
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes bounce {
-      0%, 80%, 100% {
-        transform: scale(0.8);
-      }
-      40% {
-        transform: scale(1.2);
-      }
-    }
-
-    /* Tela de login */
-    .login-container {
+    /* Dropdown Filtros */
+    .dropdown {
       display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .login-box {
-      background: #f9f9f9;
-      border: 1px solid #ccc;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-
-    .login-box h2 {
-      margin-bottom: 20px;
-    }
-
-    .login-box input {
-      width: 90%;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background: #444;
+      border-radius: 6px;
       padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-
-    .login-box button {
-      width: 100%;
-      padding: 10px;
-      background: #000000;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
+    .dropdown label {
+      display: block;
+      margin: 5px 0;
       cursor: pointer;
     }
 
-    .login-box button:hover {
-      background: #333333;
+    /* Área principal */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      margin: 40px 20px;
+    }
+
+    /* Galeria de perfis em grid */
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      grid-template-rows: 240px 240px; /* duas fileiras fixas */
+      gap: 10px;
+      justify-content: start;
+      padding: 20px;
+  /* limite máximo até 13 perfis (2 linhas de 6 + líder) */
+  max-width: calc((200px + 20px) * 7); /* 7 colunas = 1400px */
+  max-height: calc((260px * 2) + 20px); /* 2 linhas + gap = 500px */
+
+  overflow-x: auto;   /* ativa scroll horizontal */
+  overflow-y: hidden; /* impede scroll vertical */
+}
+    .icon-card {
+      width: 200px;
+      height: 240px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transition: transform 0.3s;
+      cursor: pointer;
+      border: 2px solid #ff7300;
+    }
+
+    .icon-card img {
+      width: 100%;
+      height: 70%;
+      object-fit: cover;
+      border-bottom: 4px solid  #ff7300;
+    }
+
+    .icon-card .nick {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 6px;
+      padding: 4px;
+      background: #eaeaea;
+      width: 100%;
+      text-align: center;
+      color: #111;
+    }
+
+    .icon-card .cargo {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 4px;
+      padding: 1px;
+      
+      width: 100%;
+      text-align: center;
+      color: #222;
+    }
+
+    .icon-card:hover {
+      transform: scale(1.05);
+    }
+
+    /* Rodapé fixo */
+    footer {
+      background: #222; color: #fff;
+      text-align: center; padding: 15px;
+      margin-top: auto;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
     }
   </style>
 </head>
 <body>
-  <!-- Tela de abertura -->
-  <div id="splash">
-    <h1>World Of Rucoy</h1>
-    <h2>By Westo (Oficial)</h2>
-    <div class="loading">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+ <!-- Cabeçalho -->
+<header>
+  <nav>
+    <div class="logo">
+      <img src="logo_chaos.jpg" alt="Logo" class="logo-icon">
+      <h1>The Chaos Insurgency</h1>
     </div>
-  </div>
+    <ul class="menu">
+      <li><a id="criarPerfilBtn">Criar Perfil</a></li>
+      <li>
+        <a id="filtrosBtn">Filtros</a>
+        <div class="dropdown" id="dropdownFiltros">
+          <label><input type="checkbox"> Nível Hierárquico</label>
+          <label><input type="checkbox"> Número de Medalhas</label>
+        </div>
+      </li>
+      <li><a id="chatBtn">Chat</a></li>
+      <li><a id="cargosBtn">Cargos</a></li>
+      <li><a id="descricaoBtn">Descrição</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- Tela de login -->
-  <div id="login" class="login-container">
-    <h1>Bem-vindo ao World Of Rucoy</h1>
-    <div class="login-box">
-      <h2>Faça seu Login</h2>
-      <form>
-        <input type="text" placeholder="Nickname" required>
-        <input type="password" placeholder="Senha" required>
-        <button type="submit">Entrar</button>
-      </form>
+<!-- Conteúdo principal -->
+<div class="main-content">
+  <section class="nicho">
+    <div class="galeria" id="galeriaPerfis">
+      <!-- Perfil fixo do Líder -->
+      <div class="icon-card" style="grid-column:1; grid-row:1;">
+        <img src="foto_de_perfil.jpg" alt="Líder">
+        <span class="nick">Westo Youtube</span>
+        <span class="cargo">Líder</span>
+      </div>
     </div>
-  </div>
+  </section>
+</div>
 
-  <script>
-    // Após 3 segundos, esconder splash e mostrar login
-    setTimeout(() => {
-      document.getElementById("splash").style.display = "none";
-      document.getElementById("login").style.display = "flex";
-    }, 3000);
-  </script>
+<!-- Rodapé -->
+<footer>
+  <p>&copy; 2026 - World Of Rucoy | Desenvolvido por Westo (Oficial)</p>
+</footer>
+
+<script>
+  const btnCriarPerfil = document.getElementById("criarPerfilBtn");
+  const galeria = document.getElementById("galeriaPerfis");
+  let contador = 1;
+
+  btnCriarPerfil.addEventListener("click", () => {
+    const card = document.createElement("div");
+    card.classList.add("icon-card");
+    card.innerHTML = `
+      <img src="foto_de_perfil.jpg" alt="Perfil">
+      <span class="nick">Nick${contador}</span>
+      <span class="cargo">Cargo ${contador}</span>
+    `;
+
+    // lógica de posicionamento: pares em cima, ímpares embaixo
+    if (contador % 2 === 0) {
+      card.style.gridColumn = (contador / 2) + 1;
+      card.style.gridRow = "1";
+    } else {
+      card.style.gridColumn = ((contador + 1) / 2);
+      card.style.gridRow = "2";
+    }
+
+    galeria.appendChild(card);
+    contador++;
+  });
+</script>
 </body>
 </html>
