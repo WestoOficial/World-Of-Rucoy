@@ -161,7 +161,6 @@
     </ul>
   </nav>
 </header>
-
 <!-- Conteúdo principal -->
 <div class="main-content">
   <section class="nicho">
