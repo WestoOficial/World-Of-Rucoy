@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfólio Comercial</title>
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #333;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Splash */
+    #splash {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      background: #fff;
+      color: #000;
+    }
+    #splash h1 {
+      font-size: 4em;
+      margin-bottom: -20px;
+      text-shadow: 2px 2px 5px #aaa;
+    }
+    #splash h2 {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+    .loading {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .dot {
+      width: 15px;
+      height: 15px;
+      background-color: #000;
+      border-radius: 50%;
+      animation: bounce 1s infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.8); }
+      40% { transform: scale(1.2); }
+    }
+
+    /* Login */
+    .login-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      background: #f9f9f9;
+      color: #000;
+    }
+    .login-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    .login-box h2 { margin-bottom: 20px; }
+    .login-box input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .login-box button:hover { background: #333; }
+
+    /* Cabeçalho */
+    header {
+      background: linear-gradient(to right, rgb(200, 23, 0), rgb(90, 0, 0));
+      color: #fff;
+      padding: 15px 30px;
+      position: relative;
+    }
+
+    header h1 { display: inline-block; }
+    .menu { list-style: none; float: right; }
+    .menu li { display: inline; margin: 0 15px; position: relative; }
+    .menu a { color: #fff; text-decoration: none; transition: 0.3s; cursor: pointer; }
+    .menu a:hover { color: #ff9800; }
+
+    /* Dropdown Filtros */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background: #444;
+      border-radius: 6px;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .dropdown label {
+      display: block;
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    /* Área principal */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      margin: 40px 20px;
+    }
+
+    /* Galeria de perfis em grid */
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      grid-template-rows: 240px 240px;
+      gap: 10px;
+      justify-content: start;
+      padding: 20px;
+      max-width: calc((200px + 20px) * 7);
+      max-height: calc((260px * 2) + 20px);
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .icon-card {
+      width: 200px;
+      height: 240px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transition: transform 0.3s;
+      cursor: pointer;
+      border: 2px solid #ff7300;
+    }
+    .icon-card img {
+      width: 100%;
+      height: 70%;
+      object-fit: cover;
+      border-bottom: 4px solid  #ff7300;
+    }
+    .icon-card .nick {
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 6px;
+      padding: 4px;
+      background: #eaeaea;
+      width: 100%;
+      text-align: center;
+      color: #111;
+    }
+    .icon-card .cargo {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 4px;
+      padding: 1px;
+      width: 100%;
+      text-align: center;
+      color: #222;
+    }
+    .icon-card:hover { transform: scale(1.05); }
+
+    /* Rodapé fixo */
+    footer {
+      background: #222; color: #fff;
+      text-align: center; padding: 15px;
+      margin-top: auto;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+    }
+
+    /* Modal Perfil */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .perfil-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 510px;
+      padding: 25px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      grid-template-rows: auto auto;
+      grid-gap: 10px;
+      position: relative;
+    }
+    .imagem-perfil img {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 2px solid #007bff;
+    }
+    .medalhas-container { text-align: right; }
+    .medalhas-container h3 { margin: -05px 0; font-size: 17px; color: #333; } 
+    .medalhas { margin-right: -9px; }
+    .medalha { font-size: 24px; margin-left: 1px; }
+    .descricao { grid-column: 1 / 3; }
+    .descricao label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+    .descricao textarea {
+      width: 100%;
+      resize: none;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    .contador {
+      font-size: 12px;
+      color: #666;
+      text-align: right;
+      margin-top: 4px;
+    }
+    .nome {
+      grid-column: 1 / 3;
+      font-weight: bold;
+      color: #333;
+    }
+    .hierarquia {
+      grid-column: 1 / 3;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .close-btn {
+      position: absolute;
+      top: 5px; right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+    <!-- Splash -->
+  <div id="splash">
+    <h1>World Of Rucoy</h1>
+    <h2>By Westo (Oficial)</h2>
+    <div class="loading">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div id="login" class="login-container">
+    <h1>Bem-vindo ao World Of Rucoy</h1>
+    <div class="login-box">
+      <h2>Faça seu Login</h2>
+      <form id="loginForm">
+        <input type="text" id="nickname" placeholder="Nickname" required>
+        <input type="password" id="senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+ <!-- Cabeçalho -->
+<header>
+  <nav>
+    <div class="logo">
+      <img src="logo_chaos.jpg" alt="Logo" class="logo-icon">
+      <h1>The Chaos Insurgency</h1>
+    </div>
+    <ul class="menu">
+      <li><a id="criarPerfilBtn">Criar Perfil</a></li>
+      <li>
+        <a id="filtrosBtn">Filtros</a>
+        <div class="dropdown" id="dropdownFiltros">
+          <label><input type="checkbox"> Nível Hierárquico</label>
+          <label><input type="checkbox"> Número de Medalhas</label>
+        </div>
+      </li>
+      <li><a id="chatBtn">Chat</a></li>
+      <li><a id="cargosBtn">Cargos</a></li>
+      <li><a id="descricaoBtn">Descrição</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Conteúdo principal -->
+<div class="main-content">
+  <section class="nicho">
+    <div class="galeria" id="galeriaPerfis">
+      <!-- Perfil fixo do Líder -->
+      <div class="icon-card" style="grid-column:1; grid-row:1;">
+        <img src="foto_de_perfil.jpg" alt="Líder">
+        <span class="nick">Westo Youtube</span>
+        <span class="cargo">Líder</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Rodapé -->
+<footer>
+  <p>&copy; 2026 - World Of Rucoy | Desenvolvido por Westo (Oficial)</p>
+</footer>
+
+<!-- Modal Perfil -->
+<div class="modal" id="perfilModal">
+  <div class="perfil-card">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <div class="imagem-perfil">
+      <img src="foto_de_perfil.jpg" alt="Imagem de Perfil">
+    </div>
+    <div class="medalhas-container">
+      <h3>Medalhas</h3>
+      <div class="medalhas">
+        <span class="medalha">🏅</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🏅</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🏅</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🏅</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+        <span class="medalha">🎖️</span>
+        <span class="medalha">🥇</span>
+      </div>
+    </div>
+    <div class="nome" id="perfilNome">Nome: Westo Youtube</div>
+    <div class="hierarquia" id="perfilCargo">Cargo: Líder</div>
+    <div class="descricao">
+      <label for="descricao">Descrição</label>
+      <textarea id="descricao" maxlength="100" placeholder="Deixe sua descrição (máx. 100 caracteres)"></textarea>
+      <div class="contador" id="contador">0/100</div>
+    </div>
+  </div>
+</div>
+
+<script>
+     // Splash -> Login
+    setTimeout(() => {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("login").style.display = "flex";
+    }, 3000);
+
+    // Login -> Portfolio
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nick = document.getElementById("nickname").value;
+      const senha = document.getElementById("senha").value;
+
+      // Validação simples (exemplo)
+      if(nick === "Westo" && senha === "abacate123"){
+        document.getElementById("login").style.display = "none";
+        document.getElementById("portfolio").style.display = "block";
+      } else {
+        alert("Credenciais inválidas!");
+      }
+    });
+
+  const btnCriarPerfil = document.getElementById("criarPerfilBtn");
+  const galeria = document.getElementById("galeriaPerfis");
+  let contador = 1;
+
+  btnCriarPerfil.addEventListener("click", () => {
+    const card = document.createElement("div");
+    card.classList.add("icon-card");
+    card.innerHTML = `
+      <img src="foto_de_perfil.jpg" alt="Perfil">
+      <span class="nick">Nick${contador}</span>
+      <span class="cargo">Cargo ${contador}</span>
+    `;
+
+    // lógica de posicionamento: pares em cima, ímpares embaixo
+    if (contador % 2 === 0) {
+      card.style.gridColumn = (contador / 2) + 1;
+      card.style.gridRow = "1";
+    } else {
+      card.style.gridColumn = ((contador + 1) / 2);
+      card.style.gridRow = "2";
+    }
+
+    galeria.appendChild(card);
+    contador++;
+
+    // adiciona evento de clique para abrir modal
+    card.addEventListener("click", () => abrirModal(`Nick${contador-1}`, `Cargo ${contador-1}`));
+  });
+
+  // Modal
+  const modal = document.getElementById("perfilModal");
+  const closeModal = document.getElementById("closeModal");
+  const perfilNome = document.getElementById("perfilNome");
+  const perfilCargo = document.getElementById("perfilCargo");
+
+  // abre modal com dados do perfil
+  function abrirModal(nome, cargo) {
+    perfilNome.textContent = "Nome: " + nome;
+    perfilCargo.textContent = "Cargo: " + cargo;
+    modal.style.display = "flex";
+  }
+
+  // fecha modal
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // evento para perfil fixo do líder
+  document.querySelector(".icon-card").addEventListener("click", () => {
+    abrirModal("Westo Youtube", "Líder");
+  });
+
+  // contador da descrição
+  const descricao = document.getElementById('descricao');
+  const contadorDesc = document.getElementById('contador');
+
+  descricao.addEventListener('input', () => {
+    contadorDesc.textContent = `${descricao.value.length}/100`;
+  });
+</script>
+</body>
